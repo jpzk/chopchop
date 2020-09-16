@@ -29,11 +29,7 @@ const renderText = (cursor, text) => {
   }</div>)
 }
 
-export default ({cursor, text}) => {
-  const style = {
-    padding: "4vw"
-  }
-  return(<div id="reader" style={style}>
+export default ({cursor, text, ...restOfProps}) => (<div id="reader" {...restOfProps}>
     {text == null ? renderNoText() : renderText(cursor, text)}
     </div>)
-}
+

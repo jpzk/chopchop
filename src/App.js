@@ -4,7 +4,7 @@ import './App.css';
 import Loader from './Loader.js'
 import Reader from './Reader.js'
 import Options from './Options.js'
-import styled from 'styled-components'
+import styled,{ThemeProvider} from 'styled-components'
 
 import {themes, fonts, zooms, ZoomContext, FontContext, ThemeContext} from './theme.js'
 
@@ -27,6 +27,15 @@ function useEventListener(eventName, handler, element = window){
   );
 };
 
+const Container = styled.div`
+   background-color: ${props=>props.theme.backgroundColor};
+`
+
+// to split logic and style, style wrapper component
+const StyledReader = styled(Reader)`
+padding:4vw;
+`
+
 export default () => {
   const temptext = "State also contains the updater function so it will"
   const [text, setText] = useState(temptext) 
@@ -48,7 +57,7 @@ export default () => {
   },[setCursor])
   useEventListener("keydown", handler)
 
-  const style = useMemo(()=>({
+  const currentTheme = useMemo(()=>({
     backgroundColor: theme.background,
     color: theme.foreground,
     fontSize: zoom,
@@ -58,20 +67,18 @@ export default () => {
   document.body.style.backgroundColor = theme.background
 
   return (
-    <ThemeContext.Provider value={theme}>
-      <FontContext.Provider value={font}>
-        <ZoomContext.Provider value={zoom}>
-          <div className="App" style={style}>
+    <ThemeProvider theme={currentTheme}>
+          <div className="App">
             <Options 
               setFont={n=> setFont(fonts[n])} 
               setTheme={n=> setTheme(themes[n])}
               setZoom={n=> setZoom(zooms[n])}
             />
             <Loader onChange={setText}/>
-            <Reader cursor={cursor} text={text} />
+    <Container color="papayawhip">
+            <StyledReader cursor={cursor} text={text} />
+    </Container>
           </div>
-        </ZoomContext.Provider>
-      </FontContext.Provider>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   );
 }
