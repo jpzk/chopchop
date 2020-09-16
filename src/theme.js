@@ -4,14 +4,14 @@ export const themes = {
   light: {
     foreground: '#000',
     background: '#eee',
-    selectedFg: '#fff',
-    selectedBg: '#000',
+    selectedFg: '#000',
+    selectedBg: '#d0d0d0',
   },
   dark: {
     foreground: '#fff',
     background: '#222',
-    selectedFg: '#000',
-    selectedBg: '#fff',
+    selectedFg: '#fff',
+    selectedBg: '#444',
 
   },
 };

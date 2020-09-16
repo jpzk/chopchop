@@ -52,8 +52,9 @@ export default () => {
     color: theme.foreground,
     fontSize: zoom,
     fontFamily: font.fontFamily,
-    padding: "1vw"
+    padding: "1vw",
   }
+  document.body.style.backgroundColor = theme.background
 
   return (
     <ThemeContext.Provider value={theme}>

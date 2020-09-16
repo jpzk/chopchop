@@ -7,7 +7,7 @@ const Word = ({selected, chunk}) => {
   const theme = useContext(ThemeContext)
   var style = {
     display: "inline-block",
-    marginRight: "1vw"
+    marginRight: "0.5vw",
   }
   if(selected) {
     var style = {

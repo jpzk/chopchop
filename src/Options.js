@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import './App.css';
 
-import {fonts, themes, FontContext,ThemeContext} from './theme.js'
+import {zooms, fonts, themes, FontContext,ThemeContext} from './theme.js'
 
 const Selector = ({what, options, onChange}) => {
   return(<select name={what} id={what} onChange={onChange}>
@@ -14,12 +14,6 @@ const Selector = ({what, options, onChange}) => {
 export default ({setFont, setTheme, setZoom}) => {
   const theme = useContext(ThemeContext)
   const font = useContext(FontContext)
-
-  const zooms = {
-    normal: "1vw",
-    bigger: "2vw",
-    extra: "3vw"
-  }
 
   const style = {
     fontFamily: font.fontFamily,
