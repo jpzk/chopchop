@@ -1,9 +1,10 @@
-import React, {useRef, useState, useEffect, useCallback} from 'react';
+import React, {useRef, useMemo, useState, useEffect, useCallback} from 'react';
 import './App.css';
 
 import Loader from './Loader.js'
 import Reader from './Reader.js'
 import Options from './Options.js'
+import styled from 'styled-components'
 
 import {themes, fonts, zooms, ZoomContext, FontContext, ThemeContext} from './theme.js'
 
@@ -39,21 +40,21 @@ export default () => {
   // cursor handler
   const handler = useCallback(({key}) => {
     if(key === "h" || key == "ArrowLeft") { 
-      setCursor(cursor > 0 ? cursor - 1 : 0)
+      setCursor((cursor)=>cursor > 0 ? cursor - 1 : 0)
     }
     if(key === "l" || key == "ArrowRight") {
-      setCursor(cursor + 1)
+      setCursor((cursor)=>cursor + 1)
     }
-  },[cursor])
+  },[setCursor])
   useEventListener("keydown", handler)
 
-  const style = {
+  const style = useMemo(()=>({
     backgroundColor: theme.background,
     color: theme.foreground,
     fontSize: zoom,
     fontFamily: font.fontFamily,
     padding: "1vw",
-  }
+  }),[theme,font,zoom])
   document.body.style.backgroundColor = theme.background
 
   return (
