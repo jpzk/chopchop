@@ -20,9 +20,18 @@ const StyledApp = styled.div`
 `
 
 export default () => {
-  const temptext = "State also contains the updater function so it will"
+
+  var temptext = ""
+  for(var i=0;i<255;i++) { 
+    temptext = temptext + "chop ";
+  }
+
   const [text, setText] = useState(temptext) 
   const [cursor, setCursor] = useState(0)
+  const [index, setIndex] = useState({
+    line2word: [],
+    word2line: []
+  })
 
   // global application state
   const [theme, setTheme] = useState(({
@@ -40,6 +49,7 @@ export default () => {
       setCursor((cursor) => cursor + 1)
     }
   },[setCursor])
+
   useEventListener("keydown", handler)
   document.body.style.backgroundColor = theme.background
 
@@ -48,7 +58,12 @@ export default () => {
           <StyledApp>
             <Options setTheme={setTheme}/> 
             <Loader onChange={setText}/>
-            <Reader cursor={cursor} text={text} />
+            <Reader 
+              cursor={cursor} 
+              text={text} 
+              wordsPerLine={45}
+              onIndexUpdate={setIndex} 
+            />
           </StyledApp>
     </ThemeProvider>
   );

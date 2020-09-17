@@ -3,14 +3,15 @@ export const themes = {
     foreground: '#000',
     background: '#eee',
     selectedFg: '#000',
-    selectedBg: '#d0d0d0',
+    selectedBg: '#ccc',
+    selectedLineBg: '#ddd',
   },
   dark: {
     foreground: '#fff',
     background: '#222',
     selectedFg: '#fff',
-    selectedBg: '#444',
-
+    selectedBg: '#666',
+    selectedLineBg: '#444',
   },
 };
 

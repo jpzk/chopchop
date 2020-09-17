@@ -1,7 +1,13 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import styled from 'styled-components'
 
-//const Word = ({selected, chunk}) => <div>{chunk}</div>
+const StyledLine = styled.div`
+  ${props => props.selected && `
+    background-color: ${props.theme.theme.selectedLineBg};
+  `}
+`
+const Line = ({selected, children}) => <StyledLine>{children}</StyledLine>
+
 const StyledWord = styled.div`
   display: inline-block;
   margin-right: 0.5vw;
@@ -10,19 +16,51 @@ const StyledWord = styled.div`
     background-color: ${props.theme.theme.selectedBg};
   `}
 `
-const renderNoText = () => "Please copy text in loader"
-const renderText = (cursor, text) => { 
-  const words = text.split(" ") 
-  return(words.map((w, index) => 
-      <StyledWord selected={cursor === index} key={index}>{w}</StyledWord>
-    )
-  )
+const NoText = "Please copy text in loader"
+
+// will only be called when text or wordsPerLine changes
+const compute = (text, wordsPerLine) => { 
+  const words = text.split(" ")
+  var chars = 0
+  var lines = []
+  var line = []
+  var index = {line2word: [], word2line: []} 
+
+  index.line2word.push(0)
+  words.forEach((e, i) => { 
+    index.word2line.push(lines.length)
+    chars = chars + e.length   
+    line.push({content: e, index: i})
+    if(chars > wordsPerLine) {
+      chars = 0
+      lines.push(line)
+      index.line2word.push(i+1)
+      line = []
+    } 
+  })
+  return({lines, index})
 }
+
 const StyledReader = styled.div`
-  padding: 4vw;
+  padding: 2vw;
 `
-export default ({cursor, text}) => 
-  <StyledReader>
-    {text == null ? renderNoText() : renderText(cursor,text)}
-  </StyledReader>
+export default ({cursor, text, wordsPerLine, onIndexUpdate}) => {
+  var rendered = ""
+  if(text != null) {
+    const {lines, index} = useMemo(() => compute(text, wordsPerLine), [text, wordsPerLine])
+    rendered = lines.map((l,i) => {
+      return(
+        <StyledLine selected={i === index.word2line[cursor]}>
+        {l.map((w, i) => 
+          <StyledWord selected={w.index === cursor}>{w.content}</StyledWord>)
+        }
+        </StyledLine>)
+    })
+  } else {
+    rendered = NoText;
+  }
+  return(<StyledReader>
+      {rendered}
+    </StyledReader>)
+}
 
