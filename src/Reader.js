@@ -1,39 +1,28 @@
-import React, {useContext} from 'react';
-import './App.css';
+import React from 'react';
+import styled from 'styled-components'
 
-import {FontContext,ThemeContext} from './theme.js';
-
-const Word = ({selected, chunk}) => { 
-  const theme = useContext(ThemeContext)
-  var style = {
-    display: "inline-block",
-    marginRight: "0.5vw",
-  }
-  if(selected) {
-    var style = {
-      backgroundColor: theme.selectedBg,
-      color: theme.selectedFg,
-      ...style}
-  }
-  return(<div style={style}>{chunk}</div>)
-}
-
-const renderNoText = () => {return(<div>Please copy text in loader</div>)}
-
+//const Word = ({selected, chunk}) => <div>{chunk}</div>
+const StyledWord = styled.div`
+  display: inline-block;
+  margin-right: 0.5vw;
+  ${props => props.selected && `
+    color: ${props.theme.theme.selectedFg};
+    background-color: ${props.theme.theme.selectedBg};
+  `}
+`
+const renderNoText = () => "Please copy text in loader"
 const renderText = (cursor, text) => { 
   const words = text.split(" ") 
-  return(<div>{
-    words.map((w, index) => {
-      return(<Word selected={cursor === index} chunk={w}/>)
-    })
-  }</div>)
+  return(words.map((w, index) => 
+      <StyledWord selected={cursor === index} key={index}>{w}</StyledWord>
+    )
+  )
 }
+const StyledReader = styled.div`
+  padding: 4vw;
+`
+export default ({cursor, text}) => 
+  <StyledReader>
+    {text == null ? renderNoText() : renderText(cursor,text)}
+  </StyledReader>
 
-export default ({cursor, text}) => {
-  const style = {
-    padding: "4vw"
-  }
-  return(<div id="reader" style={style}>
-    {text == null ? renderNoText() : renderText(cursor, text)}
-    </div>)
-}

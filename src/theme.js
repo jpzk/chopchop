@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const themes = {
   light: {
     foreground: '#000',
@@ -33,7 +31,3 @@ export const zooms = {
   bigger: "2vw",
   extra: "3vw"
 }
-
-export const ThemeContext = React.createContext(themes.dark);
-export const FontContext = React.createContext(fonts.sans);
-export const ZoomContext = React.createContext(zooms.normal);

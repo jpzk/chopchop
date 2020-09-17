@@ -1,15 +1,13 @@
-import React, {useContext} from 'react';
-import './App.css';
+import React from 'react';
+import styled from 'styled-components';
 
-import {FontContext,ThemeContext} from './theme.js'
+const StyledLoader = styled.div`
+  ${props => `
+    background-color: ${props.theme.theme.background}
+  `}
+`
+export default ({onChange}) => 
+  <StyledLoader>
+    <input id="loader" type="text" onChange={e => onChange(e.target.value)}/>
+  </StyledLoader>
 
-export default ({onChange}) => {
-  const theme = useContext(ThemeContext)
-  const font = useContext(FontContext)
-  const style = {
-    fontFamily: font.fontFamily,
-    backgroundColor: theme.background,
-    color: theme.foreground
-  }
-  return(<input id="loader" style={style} type="text" onChange={e => onChange(e.target.value)}/>)
-}

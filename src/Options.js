@@ -1,30 +1,26 @@
-import React, {useContext} from 'react';
+import React from 'react';
+
 import './App.css';
 
-import {zooms, fonts, themes, FontContext,ThemeContext} from './theme.js'
+import {zooms, fonts, themes} from './theme.js'
 
-const Selector = ({what, options, onChange}) => {
-  return(<select name={what} id={what} onChange={onChange}>
-     {options.map(o=> {
-       return(<option key={o} value={o}>{o}</option>)
-     })}
-    </select>)
-}
-
-export default ({setFont, setTheme, setZoom}) => {
-  const theme = useContext(ThemeContext)
-  const font = useContext(FontContext)
-
-  const style = {
-    fontFamily: font.fontFamily,
-    backgroundColor: theme.background,
-    color: theme.foreground
-  }
+export default ({setTheme}) => {
+  const registry = 
+    [{what:'font', options: fonts},
+     {what:'theme', options: themes},
+     {what:'zoom', options: zooms}]
   return(
     <div id="options">
-      <Selector what="font" options={Object.keys(fonts)} onChange={e => setFont(e.target.value)}/>
-      <Selector what="theme" options={Object.keys(themes)} onChange={e => setTheme(e.target.value)}/>
-      <Selector what="zoom" options={Object.keys(zooms)} onChange={e => setZoom(e.target.value)}/>
+     {registry.map((k,i) => 
+      <select name={k.what} key={k.what} onChange={e => {
+        const nv = {[k.what]: k.options[e.target.value]}
+        setTheme(s => ({...s, ...nv}))
+      }}>
+      {Object.keys(k.options).map(o=> {
+        return(<option key={o} value={o}>{o}</option>)
+      })}
+      </select>
+    )}
     </div>
   )
 }
