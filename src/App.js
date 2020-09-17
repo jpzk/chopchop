@@ -48,10 +48,16 @@ export default () => {
     if(key === "l" || key === "ArrowRight") {
       setCursor((cursor) => cursor + 1)
     }
-  },[setCursor])
+    if(key === "ArrowDown") { 
+      setCursor((cursor) => index.line2word[index.word2line[cursor] + 1]) 
+    }
+    if(key === "ArrowUp") { 
+      setCursor((cursor) => index.line2word[index.word2line[cursor] - 1]) 
+    }
+  },[setCursor, index])
 
   useEventListener("keydown", handler)
-  document.body.style.backgroundColor = theme.background
+  document.body.style.backgroundColor = theme.theme.background
 
   return (
     <ThemeProvider theme={theme}>

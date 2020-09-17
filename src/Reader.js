@@ -42,12 +42,15 @@ const compute = (text, wordsPerLine) => {
 }
 
 const StyledReader = styled.div`
-  padding: 2vw;
+  padding: 5vw;
+  text-align: center;
 `
 export default ({cursor, text, wordsPerLine, onIndexUpdate}) => {
   var rendered = ""
   if(text != null) {
     const {lines, index} = useMemo(() => compute(text, wordsPerLine), [text, wordsPerLine])
+    onIndexUpdate(index)
+
     rendered = lines.map((l,i) => {
       return(
         <StyledLine selected={i === index.word2line[cursor]}>
