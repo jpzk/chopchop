@@ -1,6 +1,7 @@
 export const themes = {
   light: {
     foreground: '#000',
+    fadedForeground: '#eee',
     background: '#eee',
     selectedFg: '#000',
     selectedBg: '#ccc',
@@ -8,6 +9,7 @@ export const themes = {
   },
   dark: {
     foreground: '#fff',
+    fadedForeground: '#555',
     background: '#222',
     selectedFg: '#fff',
     selectedBg: '#666',
@@ -28,7 +30,7 @@ export const fonts = {
 }
 
 export const zooms = {
-  normal: "1vw",
-  bigger: "2vw",
-  extra: "3vw"
+  normal: "1.3rem",
+  bigger: "1.4rem",
+  extra: "1.5rem"
 }

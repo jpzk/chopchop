@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import './App.css';
 
 import Loader from './Loader.js'
@@ -20,13 +20,7 @@ const StyledApp = styled.div`
 `
 
 export default () => {
-
-  var temptext = ""
-  for(var i=0;i<255;i++) { 
-    temptext = temptext + "chop ";
-  }
-
-  const [text, setText] = useState(temptext) 
+  const [text, setText] = useState(null) 
   const [cursor, setCursor] = useState(0)
   const [index, setIndex] = useState({
     line2word: [],
@@ -35,8 +29,8 @@ export default () => {
 
   // global application state
   const [theme, setTheme] = useState(({
-    font: fonts.sans,
-    theme: themes.light,
+    font: fonts.mono,
+    theme: themes.dark,
     zoom: zooms.normal
   }))
 
@@ -46,13 +40,20 @@ export default () => {
       setCursor((cursor) => cursor > 0 ? cursor - 1 : 0)
     }
     if(key === "l" || key === "ArrowRight") {
-      setCursor((cursor) => cursor + 1)
+      setCursor((cursor) => 
+        cursor == index.word2line.length - 1 ? cursor : cursor + 1)
     }
-    if(key === "ArrowDown") { 
-      setCursor((cursor) => index.line2word[index.word2line[cursor] + 1]) 
+    if(key === "j") { 
+      setCursor((cursor) => 
+        index.word2line[cursor] + 1 == index.line2word.length  ? 
+          cursor : 
+        index.line2word[index.word2line[cursor] + 1]) 
     }
-    if(key === "ArrowUp") { 
-      setCursor((cursor) => index.line2word[index.word2line[cursor] - 1]) 
+    if(key === "k") { 
+      setCursor((cursor) => 
+        index.word2line[cursor] == 0 ? 
+          cursor : 
+        index.line2word[index.word2line[cursor] - 1]) 
     }
   },[setCursor, index])
 
@@ -63,7 +64,7 @@ export default () => {
     <ThemeProvider theme={theme}>
           <StyledApp>
             <Options setTheme={setTheme}/> 
-            <Loader onChange={setText}/>
+            <Loader onChange={e => {setText(e); setCursor(0)}}/>
             <Reader 
               cursor={cursor} 
               text={text} 
