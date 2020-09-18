@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './App.css';
+import {FontIcon, ThemeIcon, FontSizeIcon} from './Icons.js';
 
 import {zooms, fonts, themes} from './theme.js'
 
@@ -11,6 +11,10 @@ export default ({setTheme}) => {
      {what:'zoom', options: zooms}]
   return(
     <div id="options">
+    <FontIcon/>
+    <ThemeIcon/>
+    <FontSizeIcon/>
+
      {registry.map((k,i) => 
       <select name={k.what} key={k.what} onChange={e => {
         const nv = {[k.what]: k.options[e.target.value]}
