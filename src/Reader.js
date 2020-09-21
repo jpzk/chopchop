@@ -1,19 +1,14 @@
 import React, {useMemo} from 'react';
 import styled from 'styled-components'
 
-// render a partial
-const wordComp = (prevProp, nextProp) => { 
-  return(prevProp.selected === nextProp.selected)
-}
-const lineComp = (prevProp, nextProp) => { 
-  return(prevProp.selected === nextProp.selected &&
-  prevProp.word === nextProp.word
-  )
-}
-const StyledPartial = styled.div`
-  border: solid 1px red;
-`
-const MemoizedPartial = React.memo(StyledPartial,wordComp)
+
+// used for determining if re-rendering is necessary
+const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
+
+const comp = (prevProp, nextProp) =>  
+  prevProp.selected === nextProp.selected &&
+  prevProp.word === nextProp.word && 
+  prevProp.hash === nextProp.hash
 
 const StyledLine = styled.div`
   opacity: 0.3;
@@ -23,8 +18,7 @@ const StyledLine = styled.div`
     opacity: 1;
   `}
 `
-
-const MemoizedStyledLine = React.memo(StyledLine,lineComp)
+const MemoizedStyledLine = React.memo(StyledLine, comp)
 
 const StyledWord = styled.span`
   margin-right: 0.5vw;
@@ -33,7 +27,7 @@ const StyledWord = styled.span`
     background-color: ${props.theme.theme.selectedBg};
   `}
 `
-const MemoizedStyledWord = React.memo(StyledWord,wordComp)
+const MemoizedStyledWord = React.memo(StyledWord, comp)
 
 const NoText = "Please copy text in loader"
 
@@ -66,31 +60,40 @@ const StyledReader = styled.div`
   transform: translate(-50%,0);
 `
 
+const render = (lines, selectedLine, cursor, hash) => {
+  const word = (isSelectedLine, cursor) => isSelectedLine ? cursor : -1  
+  const Lines = lines.map((line, lineIndex) => 
+    <MemoizedStyledLine 
+        selected={lineIndex === selectedLine}
+        hash={hash}
+        word={word(lineIndex === selectedLine, cursor)}
+      >
+      {line.map(({content, index}) => {
+        return(<MemoizedStyledWord 
+          selected={index === cursor}
+          hash={hash}
+          key={index}>{content}</MemoizedStyledWord>)
+      })}
+    </MemoizedStyledLine>
+  )
+  return(Lines)
+}
+
 export default ({cursor, text, wordsPerLine, onIndexUpdate}) => {
+  const hash = useMemo(() => hashCode(text), [text])
   const memo = useMemo(() => {
     if(text == null) {
       return null
     }
     const {lines, index} = compute(text, wordsPerLine)
     onIndexUpdate(index) 
-    return({lines, index})
+    return({lines, index, hash})
   }, [text, wordsPerLine, onIndexUpdate])
 
-  if(memo != null) {
-    const selectedLine = memo.index.word2line[cursor]
-    return(<StyledReader> 
-      {memo.lines.map((line, lineIndex)=> 
-      <MemoizedStyledLine selected={lineIndex === selectedLine}>
-        {line.map(({content, index}) => {
-          return(<MemoizedStyledWord 
-            selected={index === cursor}
-            key={index}>{content}</MemoizedStyledWord>)
-        })}
-      </MemoizedStyledLine>
-      )}
-    </StyledReader>)
-  } else {
-    return(<StyledReader>No Text</StyledReader>)
-  }
+  const rendered = (memo != null) ? 
+    render(memo.lines, memo.index.word2line[cursor], cursor, hash)
+  : "No Text"
+
+  return(<StyledReader>{rendered}</StyledReader>)
 }
 
