@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useMemo, useState, useCallback} from 'react';
 import './App.css';
 
 import Loader from './Loader.js'
@@ -26,6 +26,20 @@ export default () => {
     line2word: [],
     word2line: []
   })
+
+  useMemo(() => {
+    var words = ""
+    for(var i = 0; i<400; i++) { 
+      for(var k = 0; k<=10; k++) {
+        var w = ""
+        for(var l = 0; l<=Math.floor(k*Math.random()); l++) { 
+          w = w+"a" 
+        }
+      }
+      words = words + w + " "
+    }
+    setText(words)
+  },[])
 
   // global application state
   const [theme, setTheme] = useState(({

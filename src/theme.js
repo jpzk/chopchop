@@ -22,10 +22,10 @@ export const fonts = {
     fontFamily: "Sans"
   },
   serif: { 
-    fontFamily: "Georgia"
+    fontFamily: "Libre Baskerville"
   },
   mono: {
-    fontFamily: "Monospace"
+    fontFamily: "Inconsolata"
   }
 }
 
