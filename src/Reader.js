@@ -1,6 +1,5 @@
-import React, {useMemo} from 'react';
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
-
 
 // used for determining if re-rendering is necessary
 const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
@@ -28,8 +27,6 @@ const StyledWord = styled.span`
   `}
 `
 const MemoizedStyledWord = React.memo(StyledWord, comp)
-
-const NoText = "Please copy text in loader"
 
 // will only be called when text or wordsPerLine changes
 const compute = (text, wordsPerLine) => { 
@@ -65,6 +62,7 @@ const render = (lines, selectedLine, cursor, hash) => {
   const Lines = lines.map((line, lineIndex) => 
     <MemoizedStyledLine 
         selected={lineIndex === selectedLine}
+        key={lineIndex}
         hash={hash}
         word={word(lineIndex === selectedLine, cursor)}
       >
@@ -80,14 +78,14 @@ const render = (lines, selectedLine, cursor, hash) => {
 }
 
 export default ({cursor, text, wordsPerLine, onIndexUpdate}) => {
-  const hash = useMemo(() => hashCode(text), [text])
+  const hash = useMemo(() => (text != null) ? hashCode(text) : null , [text])
   const memo = useMemo(() => {
     if(text == null) {
       return null
     }
     const {lines, index} = compute(text, wordsPerLine)
     onIndexUpdate(index) 
-    return({lines, index, hash})
+    return({lines, index})
   }, [text, wordsPerLine, onIndexUpdate])
 
   const rendered = (memo != null) ? 

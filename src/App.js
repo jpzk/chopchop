@@ -1,13 +1,15 @@
-import React, {useMemo, useState, useCallback} from 'react';
-import './App.css';
+import React, {useMemo, useState, useCallback} from 'react'
+import styled, {ThemeProvider} from 'styled-components'
+import axios from 'axios'
 
 import Loader from './Loader.js'
 import Reader from './Reader.js'
 import Options from './Options.js'
-import styled, {ThemeProvider} from 'styled-components'
 
 import {themes, fonts, zooms} from './theme.js'
 import {useEventListener} from './event.js'
+
+import './App.css';
 
 const StyledApp = styled.div`
   padding: 1vw;
@@ -28,17 +30,12 @@ export default () => {
   })
 
   useMemo(() => {
-    var words = ""
-    for(var i = 0; i<400; i++) { 
-      for(var k = 0; k<=10; k++) {
-        var w = ""
-        for(var l = 0; l<=Math.floor(k*Math.random()); l++) { 
-          w = w+"a" 
-        }
-      }
-      words = words + w + " "
-    }
-    setText(words)
+    axios.get("/api/goget?urlpath=https://0xff.nu/microblogging")
+      .then(response => {
+        setText(JSON.stringify(response.data));
+    }, error => {
+      console.log(error);
+    });
   },[])
 
   // global application state
@@ -55,17 +52,17 @@ export default () => {
     }
     if(key === "l" || key === "ArrowRight") {
       setCursor((cursor) => 
-        cursor == index.word2line.length - 1 ? cursor : cursor + 1)
+        cursor === index.word2line.length - 1 ? cursor : cursor + 1)
     }
     if(key === "j") { 
       setCursor((cursor) => 
-        index.word2line[cursor] + 1 == index.line2word.length  ? 
+        index.word2line[cursor] + 1 === index.line2word.length  ? 
           cursor : 
         index.line2word[index.word2line[cursor] + 1]) 
     }
     if(key === "k") { 
       setCursor((cursor) => 
-        index.word2line[cursor] == 0 ? 
+        index.word2line[cursor] === 0 ? 
           cursor : 
         index.line2word[index.word2line[cursor] - 1]) 
     }

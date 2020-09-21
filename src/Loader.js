@@ -8,6 +8,5 @@ const StyledLoader = styled.div`
 `
 export default ({onChange}) => 
   <StyledLoader>
-    <input id="loader" type="text" onChange={e => onChange(e.target.value)}/>
   </StyledLoader>
 
