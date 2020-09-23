@@ -24,12 +24,7 @@ const StyledApp = styled.div`
 export default () => {
   const [text, setText] = useState(null) 
   const [cursor, setCursor] = useState(0)
-  const [index, setIndex] = useState({
-    pageLine2word: [], 
-    word2PageLine: [], 
-    word2page: [],
-    page2word: []
-  })
+  const [index, setIndex] = useState(null)
 
   useMemo(() => {
     axios.get("/api/goget?urlpath=https://0xff.nu/microblogging")
@@ -59,7 +54,7 @@ export default () => {
       setCursor((cursor) => {
         const page = index.word2page[cursor]
         return(index.word2PageLine[cursor] + 1 === index.pageLine2word[page].length  ? 
-          cursor : 
+          index.page2word[page + 1] : 
         index.pageLine2word[page][index.word2PageLine[cursor] + 1]
         )
       })
@@ -68,7 +63,7 @@ export default () => {
       setCursor((cursor) =>  {
         const page = index.word2page[cursor]
         return(index.word2PageLine[cursor] === 0 ? 
-          cursor : 
+          index.page2lastword[page - 1] : 
         index.pageLine2word[page][index.word2PageLine[cursor] - 1])
       })
     }
