@@ -25,8 +25,10 @@ export default () => {
   const [text, setText] = useState(null) 
   const [cursor, setCursor] = useState(0)
   const [index, setIndex] = useState({
-    line2word: [],
-    word2line: []
+    pageLine2word: [], 
+    word2PageLine: [], 
+    word2page: [],
+    page2word: []
   })
 
   useMemo(() => {
@@ -51,20 +53,24 @@ export default () => {
       setCursor((cursor) => cursor > 0 ? cursor - 1 : 0)
     }
     if(key === "l" || key === "ArrowRight") {
-      setCursor((cursor) => 
-        cursor === index.word2line.length - 1 ? cursor : cursor + 1)
+      setCursor((cursor) => cursor + 1)
     }
     if(key === "j") { 
-      setCursor((cursor) => 
-        index.word2line[cursor] + 1 === index.line2word.length  ? 
+      setCursor((cursor) => {
+        const page = index.word2page[cursor]
+        return(index.word2PageLine[cursor] + 1 === index.pageLine2word[page].length  ? 
           cursor : 
-        index.line2word[index.word2line[cursor] + 1]) 
-    }
+        index.pageLine2word[page][index.word2PageLine[cursor] + 1]
+        )
+      })
+      }
     if(key === "k") { 
-      setCursor((cursor) => 
-        index.word2line[cursor] === 0 ? 
+      setCursor((cursor) =>  {
+        const page = index.word2page[cursor]
+        return(index.word2PageLine[cursor] === 0 ? 
           cursor : 
-        index.line2word[index.word2line[cursor] - 1]) 
+        index.pageLine2word[page][index.word2PageLine[cursor] - 1])
+      })
     }
   },[setCursor, index])
 
@@ -80,7 +86,7 @@ export default () => {
               cursor={cursor} 
               text={text} 
               wordsPerLine={45}
-              linesPerPage={20}
+              linesPerPage={25}
               onIndexUpdate={setIndex} 
             />
           </StyledApp>

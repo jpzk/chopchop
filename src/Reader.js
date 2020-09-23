@@ -47,5 +47,5 @@ const render = (lines, selectedLine, cursor, hash) => {
 
 export default ({lines, index, cursor, hash}) => 
   <>
-    {render(lines, index.word2line[cursor], cursor, hash)}
+    {render(lines, index.word2PageLine[cursor], cursor, hash)}
   </>
