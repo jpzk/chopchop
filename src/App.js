@@ -3,8 +3,8 @@ import styled, {ThemeProvider} from 'styled-components'
 import axios from 'axios'
 
 import Loader from './Loader.js'
-import Reader from './Reader.js'
 import Options from './Options.js'
+import Page from './Page.js'
 
 import {themes, fonts, zooms} from './theme.js'
 import {useEventListener} from './event.js'
@@ -76,10 +76,11 @@ export default () => {
           <StyledApp>
             <Options setTheme={setTheme}/> 
             <Loader onChange={e => {setText(e); setCursor(0)}}/>
-            <Reader 
+            <Page
               cursor={cursor} 
               text={text} 
               wordsPerLine={45}
+              linesPerPage={20}
               onIndexUpdate={setIndex} 
             />
           </StyledApp>
