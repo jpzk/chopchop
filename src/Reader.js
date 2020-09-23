@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const comp = (prevProp, nextProp) =>  
@@ -47,5 +47,5 @@ const render = (lines, selectedLine, cursor, hash) => {
 
 export default ({lines, index, cursor, hash}) => 
   <>
-    {render(lines, index.word2line[cursor], cursor, hash)}
+    {render(lines, index.word2PageLine[cursor], cursor, hash)}
   </>

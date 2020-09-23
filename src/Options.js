@@ -16,12 +16,12 @@ const Option = ({what, init, options, icon, onChange}) => {
   useEffect(() => {
       const nv = {[what]: options[Object.keys(options)[state.selected]]}
       onChange(s => ({...s, ...nv}))
-  }, [])
+  }, [onChange, options, state.selected, what])
 
   const handle = () => {
     setState(({options, selected, hover}) => {
       const len = Object.keys(options).length
-      const ns = selected == len - 1 ? 0 : selected + 1
+      const ns = selected === len - 1 ? 0 : selected + 1
       const nv = {[what]: options[Object.keys(options)[ns]]}
       onChange(s => ({...s, ...nv}))
       return({options, selected: ns, hover})
