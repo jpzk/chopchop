@@ -42,30 +42,47 @@ export default () => {
     zoom: zooms.normal
   }))
 
+  const moveLine = (index, cursor, direction) => {
+    const page = index.word2page[cursor]
+    // go up
+    if(direction === -1) { 
+      const firstPage = page === 0 
+      const firstLine = index.word2PageLine[cursor] === 0
+
+      if(firstLine && firstPage) {
+        return(cursor)
+      } else if(firstLine) { 
+        return(index.page2lastword[page - 1])
+      } else {
+        return(index.pageLine2word[page][index.word2PageLine[cursor] - 1])
+      }
+    } else { // go down
+      const lastPage = page === index.page2word.length - 1
+      const lastLine = index.word2PageLine[cursor] + 1 === index.pageLine2word[page].length
+      if(lastLine && lastPage) {
+        return(cursor)
+      } else if(lastLine) { 
+        return(index.page2word[page + 1])
+      } else {
+        return(index.pageLine2word[page][index.word2PageLine[cursor] + 1])
+      }
+    }
+  }
+
   // cursor handler
   const handler = useCallback(({key}) => {
     if(key === "h" || key === "ArrowLeft") { 
       setCursor((cursor) => cursor > 0 ? cursor - 1 : 0)
     }
     if(key === "l" || key === "ArrowRight") {
-      setCursor((cursor) => cursor + 1)
+      setCursor((cursor) => cursor + 1 < index.word2page.length ? 
+        cursor + 1 : cursor)
     }
     if(key === "j") { 
-      setCursor((cursor) => {
-        const page = index.word2page[cursor]
-        return(index.word2PageLine[cursor] + 1 === index.pageLine2word[page].length  ? 
-          index.page2word[page + 1] : 
-        index.pageLine2word[page][index.word2PageLine[cursor] + 1]
-        )
-      })
-      }
+      setCursor((cursor) => moveLine(index, cursor, 1))
+    }
     if(key === "k") { 
-      setCursor((cursor) =>  {
-        const page = index.word2page[cursor]
-        return(index.word2PageLine[cursor] === 0 ? 
-          index.page2lastword[page - 1] : 
-        index.pageLine2word[page][index.word2PageLine[cursor] - 1])
-      })
+      setCursor((cursor) => moveLine(index, cursor, -1))
     }
   },[setCursor, index])
 
