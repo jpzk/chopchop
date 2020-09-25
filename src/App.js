@@ -5,6 +5,7 @@ import axios from 'axios'
 import Loader from './Loader.js'
 import Options from './Options.js'
 import Page from './Page.js'
+import {moveLine} from './control.js'
 
 import {themes, fonts, zooms} from './theme.js'
 import {useEventListener} from './event.js'
@@ -42,39 +43,11 @@ export default () => {
     zoom: zooms.normal
   }))
 
-  const moveLine = (index, cursor, direction) => {
-    const page = index.word2page[cursor]
-    // go up
-    if(direction === -1) { 
-      const firstPage = page === 0 
-      const firstLine = index.word2PageLine[cursor] === 0
-
-      if(firstLine && firstPage) {
-        return(cursor)
-      } else if(firstLine) { 
-        return(index.page2lastword[page - 1])
-      } else {
-        return(index.pageLine2word[page][index.word2PageLine[cursor] - 1])
-      }
-    } else { // go down
-      const lastPage = page === index.page2word.length - 1
-      const lastLine = index.word2PageLine[cursor] + 1 === index.pageLine2word[page].length
-      if(lastLine && lastPage) {
-        return(cursor)
-      } else if(lastLine) { 
-        return(index.page2word[page + 1])
-      } else {
-        return(index.pageLine2word[page][index.word2PageLine[cursor] + 1])
-      }
-    }
-  }
-
-  // cursor handler
   const handler = useCallback(({key}) => {
     if(key === "h" || key === "ArrowLeft") { 
       setCursor((cursor) => cursor > 0 ? cursor - 1 : 0)
     }
-    if(key === "l" || key === "ArrowRight") {
+    if(key === "l" || key === "w" || key === "ArrowRight") {
       setCursor((cursor) => cursor + 1 < index.word2page.length ? 
         cursor + 1 : cursor)
     }
@@ -86,6 +59,7 @@ export default () => {
     }
   },[setCursor, index])
 
+  // cursor handler
   useEventListener("keydown", handler)
   document.body.style.backgroundColor = theme.theme.background
 
@@ -98,7 +72,7 @@ export default () => {
               cursor={cursor} 
               text={text} 
               wordsPerLine={45}
-              linesPerPage={25}
+              linesPerPage={20}
               onIndexUpdate={setIndex} 
             />
           </StyledApp>

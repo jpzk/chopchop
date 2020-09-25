@@ -45,3 +45,8 @@ export const zooms = {
   bigger: "1.4rem",
   extra: "1.5rem"
 }
+
+export const lines = {
+}
+
+
