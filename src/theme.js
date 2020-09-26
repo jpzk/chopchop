@@ -52,10 +52,10 @@ export const fonts = {
     fontFamily: "Inconsolata"
   },
   sans: { 
-    fontFamily: "Sans"
+    fontFamily: "Inter"
   },
   serif: { 
-    fontFamily: "Libre Baskerville"
+    fontFamily: "Courier Prime"
   }
 }
 
