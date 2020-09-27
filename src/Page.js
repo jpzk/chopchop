@@ -10,6 +10,7 @@ const StyledPage = styled.div`
   transform: translate(-50%,-50%);
 `
 
+
 const lines = (words, wordsPerLine) => {
   var chars = 0
   var currentLine = 0
@@ -87,7 +88,7 @@ const createPageLine2Word = (pages) => {
   pages.forEach((p, pageIndex) => {
     res.push([])
     p.forEach((l, lineIndex) => { 
-      res[pageIndex].push(l[0].index)
+        res[pageIndex].push(l[0].index)
     })
   })
   return(res)

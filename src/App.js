@@ -5,10 +5,11 @@ import axios from 'axios'
 import Loader from './Loader.js'
 import Options from './Options.js'
 import Page from './Page.js'
-import {moveLine} from './control.js'
 
+import {moveLine} from './control.js'
 import {themes, fonts, zooms} from './theme.js'
 import {useEventListener} from './event.js'
+import queryString  from 'query-string';
 
 import './App.css';
 
@@ -28,7 +29,8 @@ export default () => {
   const [index, setIndex] = useState(null)
 
   useMemo(() => {
-    axios.get("/api/goget?urlpath=https://0xff.nu/microblogging")
+    const params = queryString.parse(window.location.search);
+    axios.get("/api/goget?urlpath=" + params.url)
       .then(response => {
         setText(JSON.stringify(response.data));
     }, error => {
