@@ -1,4 +1,13 @@
 export const themes = {
+  dark: {
+    foreground: '#fff',
+    fadedForeground: '#555',
+    background: '#222',
+    selectedFg: '#fff',
+    selectedBg: '#666',
+    selectedLineBg: '#444',
+    optionFg: '#fff'
+  },
   solarizedDark: {
     foreground: '#eee8d5',
     fadedForeground: '#586e75',
@@ -8,7 +17,6 @@ export const themes = {
     selectedLineBg: '#002b36',
     optionFg: '#268bd2'
   },
-
   apollo: {
     foreground: '#66606b',
     fadedForeground: '#eee',
@@ -35,16 +43,7 @@ export const themes = {
     selectedBg: '#6c71c4',
     selectedLineBg: '#eee8d5',
     optionFg: '#cb4b16'
-  },
-  dark: {
-    foreground: '#fff',
-    fadedForeground: '#555',
-    background: '#222',
-    selectedFg: '#fff',
-    selectedBg: '#666',
-    selectedLineBg: '#444',
-    optionFg: '#fff'
-  },
+  }
 };
 
 export const fonts = {

@@ -10,7 +10,6 @@ const StyledPage = styled.div`
   transform: translate(-50%,-50%);
 `
 
-
 const lines = (words, wordsPerLine) => {
   var chars = 0
   var currentLine = 0
@@ -129,7 +128,7 @@ export default ({cursor, text, wordsPerLine, linesPerPage, onIndexUpdate}) => {
         index={memo.index}
         cursor={cursor}
         hash={page}/>
-      page {page+1}/{memo.pages.length} word {cursor}/{memo.index.word2page.length} h {window.screen.height * window.devicePixelRatio}
+      page {page+1}/{memo.pages.length} word {cursor+1}/{memo.index.word2page.length} 
       </StyledPage>
     )
   } else {
