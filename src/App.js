@@ -32,6 +32,7 @@ export default () => {
     const params = queryString.parse(window.location.search);
     if(params.url === undefined) {
       window.history.pushState("object or string", "Title", "/?url=http://chopchop.ws/tutorial.txt");
+      window.location.href = "/?url=http://chopchop.ws/tutorial.txt"
     }
     axios.get("/api/goget?urlpath=" + params.url)
         .then(response => {
