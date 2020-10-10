@@ -1,3 +1,18 @@
 body {
   margin: 0;
 }
+
+@font-face {
+  font-family: "iA writer duo";
+  src: url(/fonts/iAWriterDuoS-Regular.woff2);
+}
+
+@font-face {
+  font-family: "iA writer mono";
+  src: url(/fonts/iAWriterMonoS-Regular.woff2);
+}
+
+@font-face {
+  font-family: "iA writer quattro";
+  src: url(/fonts/iAWriterQuattroS-Regular.woff2);
+}

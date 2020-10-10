@@ -7,9 +7,10 @@ const comp = (prevProp, nextProp) =>
   prevProp.hash === nextProp.hash
 
 const StyledLine = styled.div`
-  opacity: 0.5;
+  opacity: 0.33;
   margin-bottom: 0.3rem;
   ${props => props.selected && `
+    color: ${props.theme.theme.selectedLineFg};
     background-color: ${props.theme.theme.selectedLineBg};
     opacity: 1;
   `}
