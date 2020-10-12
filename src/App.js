@@ -50,7 +50,7 @@ export default () => {
   }))
 
   const handler = useCallback(({ key }) => {
-    if (key === "h" || key === "ArrowLeft") {
+    if (key === "h" || key === "b" || key === "ArrowLeft") {
       setCursor((cursor) => cursor > 0 ? cursor - 1 : 0)
     }
     if (key === "l" || key === "w" || key === "ArrowRight") {
